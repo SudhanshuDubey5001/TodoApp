@@ -32,7 +32,7 @@ class TodoListViewModel @Inject constructor(
     // now open UiEvent class
     //for one time event we can either use Channel or SharedFlow (both are same except Channel is for single observer)
     private val _uiEvent = MutableSharedFlow<UiEvent>()
-    fun get_uiEvent(): SharedFlow<UiEvent>{
+    fun get_uiEvent(): SharedFlow<UiEvent> {
         return _uiEvent
     }
 
@@ -54,9 +54,11 @@ class TodoListViewModel @Inject constructor(
                 viewModelScope.launch {
                     deletedTodo = event.todo
                     todoRepository.deleteTodo(event.todo)
-                    UiEvent.snackbarShow(
-                        content = "Todo deleted",
-                        action = "Undo"
+                    sendUiEvent(
+                        UiEvent.snackbarShow(
+                            content = "Todo deleted",
+                            action = "Undo"
+                        )
                     )
                 }
             }
