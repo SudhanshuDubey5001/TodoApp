@@ -1,12 +1,16 @@
 package com.sudhanshu.todoapp.ui.add_edit_todo
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.sudhanshu.todoapp.util.Constants
 import com.sudhanshu.todoapp.util.UiEvent
 import kotlinx.coroutines.flow.collectLatest
 
@@ -37,7 +41,14 @@ fun AddEditTodoScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                viewModel.onEvent(AddEditTodoEvents.onSaveTodoCLick)
+            }) {
+                Icon(imageVector = Icons.Default.Check, contentDescription = "save")
+            }
+        }
     )
     {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -48,6 +59,7 @@ fun AddEditTodoScreen(
                 },
                 onValueChange = {
                     viewModel.onEvent(AddEditTodoEvents.onAddTitle(it))
+                    Constants.log("Writing:::"+it)
                 },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -59,12 +71,12 @@ fun AddEditTodoScreen(
                 },
                 onValueChange = {
                     viewModel.onEvent(AddEditTodoEvents.onAddDescription(it))
+                    Constants.log("Writing:::"+it)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 maxLines = 5,
                 singleLine = false
             )
-
         }
     }
 

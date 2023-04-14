@@ -1,14 +1,17 @@
 package com.sudhanshu.todoapp.ui.add_edit_todo
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.Constraints
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sudhanshu.todoapp.data.Todo
 import com.sudhanshu.todoapp.data.TodoRepository
 import com.sudhanshu.todoapp.ui.todo_list.TodoListViewModel
+import com.sudhanshu.todoapp.util.Constants
 import com.sudhanshu.todoapp.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -42,7 +45,7 @@ class AddEditTodoViewModel @Inject constructor(
 
     init {
         //first we will see if the todos is already available in case of editing
-        val todoId = savedStateHandle.get<Int>("todoID")!!
+        val todoId = savedStateHandle.get<Int>(Constants.TODO_ID)!!
         //so we will pass -1 if the id is not found
         if (todoId != -1) {
             //now we will first load the old todos witn us------->
@@ -68,6 +71,7 @@ class AddEditTodoViewModel @Inject constructor(
                 description = event.description
             }
             AddEditTodoEvents.onSaveTodoCLick -> {
+                Constants.log("OnSavetodo called")
                 viewModelScope.launch {
                     if (title.isNotBlank()) {
                         val todo = Todo(
@@ -76,12 +80,14 @@ class AddEditTodoViewModel @Inject constructor(
                             todo?.isDone ?: false,   //see if old todos has value otherwise false
                             id = todo?.id
                         )
+                        Log.d(Constants.TAG, "writing it to database")
                         todoRepository.insertTodo(todo)
                     } else {
+                        Constants.log("showing snackbar")
                         viewModelScope.launch {
-                            UiEvent.snackbarShow(
+                            _uiEvent.emit(UiEvent.snackbarShow(
                                 content = "Cannot leave the title blank mister/missy/other/doggie/...who knows"
-                            )
+                            ))
                         }
                     }
                     _uiEvent.emit(UiEvent.popBackStack)

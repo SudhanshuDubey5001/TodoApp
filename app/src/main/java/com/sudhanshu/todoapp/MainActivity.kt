@@ -19,6 +19,7 @@ import androidx.navigation.navArgument
 import com.sudhanshu.todoapp.ui.add_edit_todo.AddEditTodoScreen
 import com.sudhanshu.todoapp.ui.theme.TODOAppTheme
 import com.sudhanshu.todoapp.ui.todo_list.TodoListScreen
+import com.sudhanshu.todoapp.util.Constants
 import com.sudhanshu.todoapp.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,9 +43,9 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(
-                        route = Routes.TODO_ADD_EDIT + "?todoId={todoId}", //todos id passed will replced in {todoId}
+                        route = Routes.TODO_ADD_EDIT + "?todoId={${Constants.TODO_ID}}", //todos id passed will replced in {todoId}
                         arguments = listOf(
-                            navArgument(name = "todoId"){
+                            navArgument(name = Constants.TODO_ID){
                                 type = NavType.IntType
                                 defaultValue = -1
                             }

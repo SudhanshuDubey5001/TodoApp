@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.sudhanshu.todoapp.util.Constants
 import com.sudhanshu.todoapp.util.UiEvent
 import kotlinx.coroutines.flow.collectLatest
 
@@ -41,6 +42,7 @@ fun TodoListScreen(
 
                 }
                 is UiEvent.snackbarShow -> {
+                    Constants.log("showing snackbar..")
                     val result = scaffoldState.snackbarHostState.showSnackbar(
                         message = event.content,
                         actionLabel = event.action
@@ -69,10 +71,11 @@ fun TodoListScreen(
                     // is a method. So this is the way we pass a method
                     event = viewModel::onTodoEvent,
                     modifier = Modifier
-                        .fillMaxWidth()
                         .clickable {
+                            Constants.log("CLicked todo!!")
                             viewModel.onTodoEvent(TodoListEvents.OnTodoClick(it))
                         }
+                        .fillMaxWidth()
                         .padding(16.dp)
                 )
             }

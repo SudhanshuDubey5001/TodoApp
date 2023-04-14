@@ -23,15 +23,16 @@ object AppModule {
     //now here define the methods how the dependencies will be created
     @Provides //meaning it will provide the dependency to whoever repquests it
     @Singleton //meaning it will only have single instance
-    fun provideTodoDatabase(app: Application): TodoDatabase {
-        return Room.databaseBuilder(app, TodoDatabase::class.java, "todo_db").build()
-    }
-
-    //now we got the database instance "db", but we also need repository instance, so we will simply pass in this
-    // below method and get the repo instance-->
-    @Provides
-    @Singleton
-    fun provideTodoRepository(db: TodoDatabase): TodoRepository {
+    fun provideTodoRepository(app: Application): TodoRepository {
+        val db = Room.databaseBuilder(app, TodoDatabase::class.java, "todo_db").build()
         return TodoRepositoryImpl(db.todoDao)
     }
+
+//    //now we got the database instance "db", but we also need repository instance, so we will simply pass in this
+//    // below method and get the repo instance-->
+//    @Provides
+//    @Singleton
+//    fun provideTodoRepository(db: TodoDatabase): TodoRepository {
+//        return TodoRepositoryImpl(db.todoDao)
+//    }
 }

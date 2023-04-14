@@ -1,9 +1,11 @@
 package com.sudhanshu.todoapp.ui.todo_list
 
+import androidx.compose.ui.unit.Constraints
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sudhanshu.todoapp.data.Todo
 import com.sudhanshu.todoapp.data.TodoRepository
+import com.sudhanshu.todoapp.util.Constants
 import com.sudhanshu.todoapp.util.Routes
 import com.sudhanshu.todoapp.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,6 +61,7 @@ class TodoListViewModel @Inject constructor(
                 }
             }
             is TodoListEvents.OnTodoClick -> {
+                Constants.log("Sending it to edit screen...")
                 sendUiEvent(UiEvent.navigate(Routes.TODO_ADD_EDIT + "?todoId=" + event.todo.id))
             }
             TodoListEvents.OnUndoDeleteClick -> {
@@ -69,6 +72,7 @@ class TodoListViewModel @Inject constructor(
                 }
             }
             is TodoListEvents.OnAddTodo -> {
+                Constants.log("floating button clicked!")
                 sendUiEvent(UiEvent.navigate(Routes.TODO_ADD_EDIT))
             }
         }
