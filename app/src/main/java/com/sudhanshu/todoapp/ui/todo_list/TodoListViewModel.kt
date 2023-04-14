@@ -67,6 +67,7 @@ class TodoListViewModel @Inject constructor(
                 sendUiEvent(UiEvent.navigate(Routes.TODO_ADD_EDIT + "?todoId=" + event.todo.id))
             }
             TodoListEvents.OnUndoDeleteClick -> {
+                Constants.log("Undo clicked!")
                 viewModelScope.launch {
                     deletedTodo?.let {
                         todoRepository.insertTodo(it)
